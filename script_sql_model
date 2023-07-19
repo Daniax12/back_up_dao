@@ -1,0 +1,39 @@
+CREATE SEQUENCE dept_seq START WITH 1 MINVALUE 1 INCREMENT BY 1;
+CREATE TABLE departement(
+	iddepartement VARCHAR(50) NOT NULL PRIMARY KEY,
+	namedepartement VARCHAR(100),
+	location VARCHAR(50)
+);
+
+INSERT INTO departement VALUES('D1', 'Administration', 'Antananarivo');
+
+
+CREATE SEQUENCE emp_seq START WITH 1 MINVALUE 1 INCREMENT BY 1;
+CREATE TABLE employe(
+	idemploye VARCHAR(50) NOT NULL PRIMARY KEY,
+	nameemploye VARCHAR(100),
+	numero NUMERIC,
+	dateembauche DATE,
+	iddepartement VARCHAR(50),
+	badge BYTEA,
+	FOREIGN KEY(iddepartement) REFERENCES departement(iddepartement)
+);
+
+CREATE SEQUENCE pointage_seq START WITH 1 MINVALUE 1 INCREMENT BY 1;
+
+CREATE TABLE pointage(
+	id_pointage VARCHAR(50) NOT NULL PRIMARY KEY,
+	idemploye VARCHAR(50),
+	date_arrive TIMESTAMP,
+	remarque VARCHAR(100),
+	FOREIGN KEY(idemploye) REFERENCES employe(idemploye)
+);
+
+
+-- ------------------------------------------------------
+
+CREATE VIEW v_pointage_detail AS(
+	SELECT pointage.*, employe.nameemploye
+	FROM pointage
+	INNER JOIN employe ON employe.idemploye = pointage.idemploye
+);
